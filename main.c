@@ -4,10 +4,12 @@
 #include <string.h>
 #include <ctype.h>
 #include <conio.h>
-#include "menusAndHeaders.c"
+#include "menuAndHeaders.h"
+#include "funcionalidades.h"
 
 int main(void)
 {
+    setlocale(LC_ALL, "Portuguese");
 	inicioLanguage :
 	menuFuncionalidade();
 	char decisaoFuncionalidade;
@@ -22,7 +24,7 @@ int main(void)
 		case '2':
 			consultarLivro();
 			break;
-        
+
 		case '3':
 			editarLivro();
 			break;
