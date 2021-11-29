@@ -12,21 +12,38 @@ void incluirLivro()
     else 
 	{
         cabecalhoCaso1();
-        printf("\n      Digite o titulo: ");
+        inicio:
+        
+        printf("\n      Digite o código do livro: ");
         fflush(stdin);
-        gets(livro.titulo);
+        fgets(livro.codigo, 5, stdin);
+        
+        /*
+        while(fread(&livro, sizeof(LIVRO), 1, arq) == 1) 
+    	{
+    		if(strcmp(livro.codigo, livro.codigo) == 0)
+    		{
+    			printf("\n      Já existe um livro com esse código. ");	
+    			goto inicio;
+			}
+    	}
+        */
+        
+        printf("      Digite o titulo: ");
+        fflush(stdin);
+        fgets(livro.titulo, 100, stdin);
 
         printf("      Digite o nome do autor(a): ");
         fflush(stdin);
-        gets(livro.autor);
+        fgets(livro.autor, 50, stdin);
 
         printf("      Digite o numero da edicao: ");
         fflush(stdin);
-        gets(livro.num_edicao);
+        fgets(livro.num_edicao, 3, stdin);
 
         printf("      Digite o nome da editora: ");
         fflush(stdin);
-        gets(livro.editora);
+        fgets(livro.editora, 50, stdin);
 
         printf("      Digite o ano da publicacao: ");
 		scanf("%d", &livro.ano_pub);
@@ -39,7 +56,7 @@ void incluirLivro()
 
     fclose(arq);
 
-    printf("      Dados gravados com sucesso!");
+    printf("\n      Dados gravados com sucesso!");
     printf("\n\n      Clique em qualquer botão para voltar para o menu principal...");
     getch();
 }
@@ -58,14 +75,52 @@ void consultarLivro(){
 	{
 		cabecalhoCaso2();
 		
+		
 	}
 
 	fclose(arq);	
 }
 
 void editarLivro() {
-	cabecalhoCaso3();
-	printf("Editar");
+	FILE *arq;
+    arq = fopen("acervoLivros.txt", "rb");
+    LIVRO livro;
+
+    if (arq == NULL) 
+	{
+        printf("      ERRO! O arquivo não foi aberto!\n");
+        system("pause");
+    }
+    else 
+	{
+		cabecalhoCaso3();
+		
+		char codigo[5];
+		
+		printf("\n      Digite o código do livro que deseja pesquisar: ");
+		fflush(stdin);
+        gets(codigo);
+
+		while(fread(&livro, sizeof(LIVRO), 1, arq) == 1) 
+    	{
+    		if(strcmp(codigo, livro.codigo) == 0)
+    		{
+    			printf("\n      Título: %s", livro.titulo);
+				printf("      Autores: %s", livro.autor);
+				printf("      Número da edição: v.%s", livro.num_edicao);
+				printf("      Nome da editora: %s", livro.editora);
+				printf("      Ano de publicação: %d", livro.ano_pub);
+				printf("\n      Número de páginas: %dp.\n", livro.num_page);		
+			}
+			else {
+				printf("\n      Não encontramos nenhum livro no nosso acervo com esse código.");
+			}
+    	}
+	}
+	
+	fclose(arq);
+	printf("\n\n      Clique em qualquer botão para voltar para o menu principal...");
+    getch();
 }
 
 void verTodosLivros()
@@ -84,11 +139,13 @@ void verTodosLivros()
 		cabecalhoCaso4();
     	while(fread(&livro, sizeof(LIVRO), 1, arq) == 1) 
     	{
-    		printf("\n      Título: %s", livro.titulo);
-			printf("\n      Autores: %s", livro.autor);
-			printf("\n      Número da edição: v.%s", livro.num_edicao);
-			printf("\n      Nome da editora: %s", livro.editora);
-			printf("\n      Ano de publicação: %d", livro.ano_pub);
+    		printf("\n      ------------------------------------\n");
+			printf("\n      Código: %s", livro.codigo);
+			printf("\n      Título: %s", livro.titulo);
+			printf("      Autores: %s", livro.autor);
+			printf("      Número da edição: v.%s", livro.num_edicao);
+			printf("      Nome da editora: %s", livro.editora);
+			printf("      Ano de publicação: %d", livro.ano_pub);
 			printf("\n      Número de páginas: %dp.\n", livro.num_page);
 			printf("\n      ------------------------------------\n");
 		}
