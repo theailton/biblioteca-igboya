@@ -53,8 +53,9 @@ void incluirLivro()
 void consultarLivro()
 {	
 	FILE *arq;
-    arq = fopen("acervoLivros.txt", "ab");
+    arq = fopen("acervoLivros.txt", "r+b");
     LIVRO livro;
+    char codigo[5];
 	
 	if (arq == NULL) 
 	{
@@ -64,11 +65,30 @@ void consultarLivro()
     else 
 	{
 		cabecalhoCaso2();
+		printf("\n      Digite o codigo para a busca: ");
+		fflush(stdin);
+		gets(codigo);
 		
-		
+		while(fread(&livro, sizeof(LIVRO), 1, arq) == 1)
+		{
+			if(strcmp(codigo, livro.codigo) == 0)
+			{
+				printf("\n      ------------------------------------\n");
+				printf("\n      Código: %s", livro.codigo);
+				printf("\n      Título: %s", livro.titulo);
+				printf("      Autores: %s", livro.autor);
+				printf("      Número da edição: v.%s", livro.num_edicao);
+				printf("      Nome da editora: %s", livro.editora);
+				printf("      Ano de publicação: %d", livro.ano_pub);
+				printf("\n      Número de páginas: %dp.\n", livro.num_page);
+				printf("\n      ------------------------------------\n");
+			}
+		}
 	}
-
-	fclose(arq);	
+	fclose(arq);
+	
+	printf("\n\n      Clique em qualquer botão para voltar para o menu principal...");
+    getch();		
 }
 
 void editarLivro() 
@@ -126,7 +146,7 @@ void editarLivro()
 				fwrite(&livro, sizeof(LIVRO), 1, arq2);	
 			}
 			else {
-				fwrite(&livro, sizeof(LIVRO), 1, arq2);	
+				fwrite(&livro, sizeof(LIVRO), 1, arq2);
 			}
     	}
 	}
