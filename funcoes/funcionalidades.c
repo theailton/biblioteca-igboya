@@ -18,17 +18,6 @@ void incluirLivro()
         fflush(stdin);
         fgets(livro.codigo, 5, stdin);
         
-        /*
-        while(fread(&livro, sizeof(LIVRO), 1, arq) == 1) 
-    	{
-    		if(strcmp(livro.codigo, livro.codigo) == 0)
-    		{
-    			printf("\n      Já existe um livro com esse código. ");	
-    			goto inicio;
-			}
-    	}
-        */
-        
         printf("      Digite o titulo: ");
         fflush(stdin);
         fgets(livro.titulo, 100, stdin);
@@ -61,7 +50,8 @@ void incluirLivro()
     getch();
 }
 
-void consultarLivro(){	
+void consultarLivro()
+{	
 	FILE *arq;
     arq = fopen("acervoLivros.txt", "ab");
     LIVRO livro;
@@ -81,9 +71,11 @@ void consultarLivro(){
 	fclose(arq);	
 }
 
-void editarLivro() {
-	FILE *arq;
-    arq = fopen("acervoLivros.txt", "rb");
+void editarLivro() 
+{
+	FILE *arq, *arq2;
+    arq = fopen("acervoLivros.txt", "r+b");
+    arq2 = fopen("acervoLivros2.txt", "w+b");
     LIVRO livro;
 
     if (arq == NULL) 
@@ -105,20 +97,45 @@ void editarLivro() {
     	{
     		if(strcmp(codigo, livro.codigo) == 0)
     		{
-    			printf("\n      Título: %s", livro.titulo);
-				printf("      Autores: %s", livro.autor);
-				printf("      Número da edição: v.%s", livro.num_edicao);
-				printf("      Nome da editora: %s", livro.editora);
-				printf("      Ano de publicação: %d", livro.ano_pub);
-				printf("\n      Número de páginas: %dp.\n", livro.num_page);		
+				printf("\n      Digite o código do livro: ");
+		        fflush(stdin);
+		        fgets(livro.codigo, 5, stdin);
+		        
+		        printf("      Digite o titulo: ");
+		        fflush(stdin);
+		        fgets(livro.titulo, 100, stdin);
+		
+		        printf("      Digite o nome do autor(a): ");
+		        fflush(stdin);
+		        fgets(livro.autor, 50, stdin);
+		
+		        printf("      Digite o numero da edicao: ");
+		        fflush(stdin);
+		        fgets(livro.num_edicao, 3, stdin);
+		
+		        printf("      Digite o nome da editora: ");
+		        fflush(stdin);
+		        fgets(livro.editora, 50, stdin);
+		
+		        printf("      Digite o ano da publicacao: ");
+				scanf("%d", &livro.ano_pub);
+		
+		        printf("      Digite o total de paginas do livro: ");
+		        scanf("%d", &livro.num_page);	
+				
+				fwrite(&livro, sizeof(LIVRO), 1, arq2);	
 			}
 			else {
-				printf("\n      Não encontramos nenhum livro no nosso acervo com esse código.");
+				fwrite(&livro, sizeof(LIVRO), 1, arq2);	
 			}
     	}
 	}
 	
 	fclose(arq);
+	fclose(arq2);
+	remove("acervoLivros.txt");
+	rename("acervoLivros2.txt", "acervoLivros.txt");
+	
 	printf("\n\n      Clique em qualquer botão para voltar para o menu principal...");
     getch();
 }
