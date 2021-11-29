@@ -12,6 +12,10 @@ void incluirLivro()
     else 
 	{
         cabecalhoCaso1();
+        printf("\n      Digite o código do livro: ");
+        fflush(stdin);
+        gets(livro.codigo);
+        
         printf("\n      Digite o titulo: ");
         fflush(stdin);
         gets(livro.titulo);
@@ -64,8 +68,23 @@ void consultarLivro(){
 }
 
 void editarLivro() {
-	cabecalhoCaso3();
-	printf("Editar");
+	FILE *arq;
+    arq = fopen("acervoLivros.txt", "rb");
+    LIVRO livro;
+
+    if (arq == NULL) 
+	{
+        printf("      ERRO! O arquivo não foi aberto!\n");
+        system("pause");
+    }
+    else 
+	{
+		cabecalhoCaso3();
+	}
+	
+	fclose(arq);
+	printf("\n\n      Clique em qualquer botão para voltar para o menu principal...");
+    getch();
 }
 
 void verTodosLivros()
@@ -84,7 +103,8 @@ void verTodosLivros()
 		cabecalhoCaso4();
     	while(fread(&livro, sizeof(LIVRO), 1, arq) == 1) 
     	{
-    		printf("\n      Título: %s", livro.titulo);
+    		printf("\n      Código: %s", livro.codigo);
+			printf("\n      Título: %s", livro.titulo);
 			printf("\n      Autores: %s", livro.autor);
 			printf("\n      Número da edição: v.%s", livro.num_edicao);
 			printf("\n      Nome da editora: %s", livro.editora);
